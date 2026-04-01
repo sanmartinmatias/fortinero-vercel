@@ -8,6 +8,16 @@ export default async function handler(
   request: VercelRequest,
   response: VercelResponse
 ) {
+
+  // 1. Handle GET (Browser Test)
+  if (request.method === 'GET') {
+    const allPlayers = await redis.hgetall('world_map');
+    return response.status(200).json({ 
+      status: "fortinero API is Online", 
+      activePlayers: allPlayers 
+    });
+  }
+
   // Only allow POST requests for creating/updating sessions
   if (request.method !== 'POST') {
     return response.status(405).json({ error: 'Method not allowed' });
