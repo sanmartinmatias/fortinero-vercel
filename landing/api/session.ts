@@ -8,6 +8,17 @@ export default async function handler(
   request: VercelRequest,
   response: VercelResponse
 ) {
+  // 0. Explicit CORS handling
+  response.setHeader('Access-Control-Allow-Credentials', 'true');
+  response.setHeader('Access-Control-Allow-Origin', '*'); // Or 'http://localhost:5173' for security
+  response.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
+  response.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
+
+  // Handle the Preflight request
+  if (request.method === 'OPTIONS') {
+    return response.status(200).end();
+  }
+
   const WORLD_KEY = 'world_map';
 
   // 1. Handle GET (Browser Test + Neighborhood Sync)
