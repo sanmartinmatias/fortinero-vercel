@@ -19,7 +19,7 @@ export default async function handler(
     }
 
     const now = Date.now();
-    const activePlayers = {};
+      const activePlayers: Record<string, any> = {};
     const expiredPlayers: string[] = [];
 
     // Cleanup Logic: Iterate and filter
