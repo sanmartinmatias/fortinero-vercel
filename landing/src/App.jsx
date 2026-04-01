@@ -2,6 +2,7 @@ import React from "react";
 import { Unity, useUnityContext } from "react-unity-webgl";
 import { isMobile } from "react-device-detect";
 import MiniMap from "./MiniMap";
+import { SpeedInsights } from '@vercel/speed-insights/react';
 
 
 // Separate component for the Mobile Companion View
@@ -68,6 +69,7 @@ const MobileCompanion = () => {
           <p className="text-center text-slate-500 italic mt-10">Searching for frontiersmen...</p>
         )}
       </div>
+      <SpeedInsights />
     </div>
   );
 };
@@ -115,6 +117,7 @@ function App() {
       <h1 className="text-indigo-400 text-xl mt-6 opacity-50">
         WEBGL EDITION
       </h1>
+      <SpeedInsights />
     </div>
   );
 }
