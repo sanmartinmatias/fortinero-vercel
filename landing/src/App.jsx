@@ -4,10 +4,10 @@ import { Unity, useUnityContext } from "react-unity-webgl";
 function App() {
   const { unityProvider, isLoaded, loadingProgression } = useUnityContext({
     // These paths are relative to the 'public' folder
-    loaderUrl: "UnityBuild/Build/Build.loader.js",
-    dataUrl: "UnityBuild/Build/Build.data.gz",
-    frameworkUrl: "UnityBuild/Build/Build.framework.js.gz",
-    codeUrl: "UnityBuild/Build/Build.wasm.gz",
+    loaderUrl: "https://uxqqf3lp7rv5jnon.public.blob.vercel-storage.com/UnityBuild/Build/Build.loader.js",
+    dataUrl: "https://uxqqf3lp7rv5jnon.public.blob.vercel-storage.com/UnityBuild/Build/UnityBuild.data",
+    frameworkUrl: "https://uxqqf3lp7rv5jnon.public.blob.vercel-storage.com/UnityBuild/Build/UnityBuild.framework.js",
+    codeUrl: "https://uxqqf3lp7rv5jnon.public.blob.vercel-storage.com/UnityBuild/Build/UnityBuild.wasm",
   });
 
   // Calculate loading percentage
