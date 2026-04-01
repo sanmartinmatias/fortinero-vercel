@@ -24,17 +24,24 @@ export default async function handler(
   }
 
   try {
-    const { playerId, gameState } = request.body;
+    try {
+  const { playerId, gameState } = request.body;
 
-    if (!playerId) {
-      return response.status(400).json({ error: 'Missing playerId' });
-    }
+  if (!playerId) {
+    return response.status(400).json({ error: 'Missing playerId' });
+  }
 
-    // "File-like" storage using Redis
-    // Set with an expiry (TTL) of 24 hours (86400 seconds)
-    await redis.set(`session:${playerId}`, gameState, { ex: 86400 });
+  // Use hset to put this player into the "world_map" collection
+  // This saves the gameState inside the hash under the playerId field
+  await redis.hset('world_map', { 
+    [playerId]: JSON.stringify(gameState) 
+  });
 
-    return response.status(200).json({ success: true, message: 'Saved' });
+  // Optional: If you want the whole world_map to expire eventually
+  await redis.expire('world_map', 86400); 
+
+  return response.status(200).json({ success: true, message: 'Saved to World Map' });
+}
   } catch (error) {
     return response.status(500).json({ error: 'Failed to save session' });
   }
