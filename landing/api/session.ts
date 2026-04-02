@@ -73,7 +73,7 @@ export default async function handler(
         z: z || 0,
         gameState: gameState || {},
         recentActions: recentActions || [], // <--- SAVE THE RAIL!
-        lastSeen: lastSeen || 0 // The critical "heartbeat"
+        lastSeen: Date.now() // The critical "heartbeat"
       };
 
       await redis.hset(WORLD_KEY, { [playerId]: playerRecord });
