@@ -31,7 +31,9 @@ const MobileCompanion = () => {
     };
 
     // Initial fetch
-    fetchPlayers();
+    if (!document.hidden) { // Only fetch if the tab is active!
+      fetchPlayers();
+    }
 
     // Poll every 5 seconds to keep the "Companion" in sync with the game
     const intervalId = setInterval(fetchPlayers, 5000);
@@ -41,33 +43,50 @@ const MobileCompanion = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-slate-900 text-white p-6 flex flex-col items-center">
-      <header className="mb-8 text-center">
-        <h1 className="text-3xl font-black text-indigo-500 tracking-tighter">
-          FORTINERO <span className="text-xs border border-indigo-500 px-1 ml-2">RADAR</span>
+    <div className="min-h-screen bg-slate-950 text-emerald-500 p-6 flex flex-col items-center font-mono">
+      {/* Header Info */}
+      <header className="mb-6 text-center w-full max-w-sm border-b border-emerald-900/50 pb-4">
+        <h1 className="text-2xl font-black tracking-tighter">
+          FORTINERO <span className="text-xs bg-emerald-900 px-1 ml-1 text-emerald-200">RECON</span>
         </h1>
-        {isOffline && (
-          <p className="text-red-500 text-xs mt-2 animate-pulse">CONNECTION LOST</p>
+        {isOffline ? (
+          <p className="text-red-500 text-[10px] mt-2 animate-pulse uppercase tracking-[0.2em]">
+            ! Signal Interference !
+          </p>
+        ) : (
+          <p className="text-emerald-700 text-[10px] mt-2 uppercase tracking-[0.2em]">
+            Syncing Wastes...
+          </p>
         )}
       </header>
 
-      <div className="w-full max-w-md space-y-4">
-        {Object.entries(players).length > 0 ? (
-          Object.entries(players).map(([id, player]) => (
-            <div key={id} className="p-4 bg-slate-800 border-l-4 border-indigo-500 rounded-r-lg shadow-md">
-              <div className="flex justify-between items-center">
-                <span className="font-bold text-indigo-300">Player_{id.slice(0, 4)}</span>
-                <span className="text-[10px] text-slate-500 uppercase tracking-widest">Active</span>
-              </div>
-              <p className="text-xs text-slate-400 mt-1">
-                POS: {Math.round(player.x)}, {Math.round(player.y)}
-              </p>
-            </div>
-          ))
-        ) : (
-          <p className="text-center text-slate-500 italic mt-10">Searching for frontiersmen...</p>
-        )}
+      {/* THE COMPONENT INTEGRATION */}
+      {/* We pass the players object directly as a prop */}
+      <div className={`transition-all duration-700 ${isOffline ? 'opacity-30 blur-[1px]' : 'opacity-100'}`}>
+        <MiniMap players={players} />
       </div>
+
+      {/* Quick Stats Overlay (Optional) */}
+      <div className="mt-8 w-full max-w-[320px] bg-emerald-950/20 border border-emerald-900/40 p-4 rounded-md">
+        <div className="flex justify-between text-[10px] uppercase tracking-widest border-b border-emerald-900/30 pb-2 mb-2">
+          <span>Signatures</span>
+          <span className="font-bold">{Object.keys(players).length} Detected</span>
+        </div>
+        
+        {/* Small Scrollable list for raw data */}
+        <div className="space-y-1 h-24 overflow-y-auto pr-2 text-[9px] opacity-70">
+          {Object.entries(players).map(([id, p]) => (
+            <div key={id} className="flex justify-between">
+              <span>GAUCHO_{id.slice(0, 4)}</span>
+              <span>{Math.round(p.x)}X {Math.round(p.y)}Y</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <footer className="mt-auto text-[8px] text-emerald-900 uppercase tracking-widest pb-4">
+        Handheld Unit: Mod-45 // Sector: Pampa-Cyber
+      </footer>
     </div>
   );
 };
