@@ -62,7 +62,7 @@ export default async function handler(
   // 2. Handle POST (Unity Pulse)
   if (request.method === 'POST') {
     try {
-      const { playerId, x, y, z,recentActions, gameState } = request.body;
+      const { playerId, x, y, z,recentActions, lastSeen,gameState } = request.body;
 
       if (!playerId) return response.status(400).json({ error: 'Missing playerId' });
 
@@ -73,7 +73,7 @@ export default async function handler(
         z: z || 0,
         gameState: gameState || {},
         recentActions: recentActions || [], // <--- SAVE THE RAIL!
-        lastSeen: Date.now() // The critical "heartbeat"
+        lastSeen: lastSeen// The critical "heartbeat"
       };
 
       await redis.hset(WORLD_KEY, { [playerId]: playerRecord });
