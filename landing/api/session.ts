@@ -62,7 +62,7 @@ export default async function handler(
   // 2. Handle POST (Unity Pulse)
   if (request.method === 'POST') {
     try {
-      const { playerId, x, y, z,rs ,recentActions, gameState } = request.body;
+      const { playerId, x, y, z,ry ,recentActions, gameState } = request.body;
 
       if (!playerId) return response.status(400).json({ error: 'Missing playerId' });
 
@@ -70,7 +70,7 @@ export default async function handler(
         x: x || 0,
         y: y || 0,
         z: z || 0,
-        rs: rs || 0,
+        ry: ry || 0,
         playerId: playerId,
         gameState: gameState || {},
         recentActions: recentActions || [],
