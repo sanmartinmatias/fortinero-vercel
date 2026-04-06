@@ -2,7 +2,7 @@ import { Redis } from '@upstash/redis';
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
 const redis = Redis.fromEnv();
-const SESSION_TIMEOUT_MS = 60000; // 1 minute (adjust as needed for "sparse" updates)
+const SESSION_TIMEOUT_MS = 60000; 
 
 export default async function handler(
   request: VercelRequest,
@@ -30,7 +30,7 @@ export default async function handler(
     }
 
     const now = Date.now();
-      const activePlayers: Record<string, any> = {};
+    const activePlayers: Record<string, any> = {};
     const expiredPlayers: string[] = [];
 
     // Cleanup Logic: Iterate and filter
@@ -66,14 +66,14 @@ export default async function handler(
 
       if (!playerId) return response.status(400).json({ error: 'Missing playerId' });
 
-      // Wrap data with a timestamp
       const playerRecord = {
         x: x || 0,
         y: y || 0,
         z: z || 0,
+        playerId: playerId,
         gameState: gameState || {},
-        recentActions: recentActions || [], // <--- SAVE THE RAIL!
-        lastSeen: Date.now() // The critical "heartbeat"
+        recentActions: recentActions || [],
+        lastSeen: Date.now() 
       };
 
       await redis.hset(WORLD_KEY, { [playerId]: playerRecord });
